@@ -35,21 +35,31 @@ public class Usuario extends Thread {
         int procesadores = (int)(Math.random()*maxProcesadores)+1;
         int memoria = (int)(Math.random()*maxMemoria)+1;
         int almacenamiento = ( int)(Math.random()*maxAlmacenamiento)+1;
-        memoria = redondear(memoria);
-        almacenamiento = redondear(almacenamiento);
+
+        memoria = redondearPotenciaDeDos(memoria);
+        almacenamiento = redondearMultiploDeDos(almacenamiento);
+        
         return new Solicitud(id, idUsuario, procesadores,memoria, almacenamiento);
     }
     
-    private int redondear(int numero) {
+    private int redondearPotenciaDeDos(int numero) {
         int resultado = 1;
-        while (resultado*2<=numero) {
-            resultado=resultado * 2;
+
+        while (resultado * 2 <= numero) {
+            resultado = resultado * 2;
         }
+
         return resultado;
     }
+
+    private int redondearMultiploDeDos(int numero) {
+        return numero - (numero % 2);
+    }
+
     private void depositar(Solicitud solicitud) throws InterruptedException {
         buzon.depositar(solicitud);
     }
+
     private void informarTerminacion() {
         buzon.informarTerminacion();
     }
