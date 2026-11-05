@@ -56,4 +56,12 @@ public class ControladorProcesadores {
             }
         }
     }
+
+    public synchronized boolean estaTodoLibre() {
+        return asignaciones.isEmpty();
+    }
+
+    public synchronized int cantidadAsignada() {
+        return asignaciones.size();
+    }
 }

@@ -19,15 +19,43 @@ public class Usuario extends Thread {
     }
     @Override
     public void run() {
+
+        System.out.println("[" + getName()
+                + "] Inicia; generará " + numSolicitudes + " solicitudes.");
+
         try {
+
             for (int i = 1; i <= numSolicitudes; i++) {
+
                 Solicitud solicitud = generarSolicitud(i);
+
+                System.out.println("[" + getName() + "] Generó "
+                        + solicitud.getIdSolicitud()
+                        + " (CPU=" + solicitud.getNumProcesadores()
+                        + ", memoria=" + solicitud.getMemoriaGiB()
+                        + " GiB, almacenamiento="
+                        + solicitud.getAlmacenamientoGiB() + " GiB).");
+
                 depositar(solicitud);
+
+                System.out.println("[" + getName()
+                        + "] Depositó " + solicitud.getIdSolicitud()
+                        + " en el buzón.");
             }
+
         } catch (InterruptedException e) {
-            interrupt();
+
+            Thread.currentThread().interrupt();
+
+            System.out.println("[" + getName()
+                    + "] Fue interrumpido antes de generar todas sus solicitudes.");
+
         } finally {
+
             informarTerminacion();
+
+            System.out.println("[" + getName()
+                    + "] Terminó de producir solicitudes.");
         }
     }
     private Solicitud generarSolicitud(int numero) {
@@ -52,8 +80,15 @@ public class Usuario extends Thread {
         return resultado;
     }
 
+    // Si el valor generado es 1, se conserva como excepción,
+    // ya que no existe un múltiplo positivo de 2 inferior
+    // para los demás valores, se redondea al múltiplo de 2 inferior
     private int redondearMultiploDeDos(int numero) {
-        return numero - (numero % 2);
+        if (numero == 1) {
+            return 1;
+        }
+
+        return numero - numero % 2;
     }
 
     private void depositar(Solicitud solicitud) throws InterruptedException {

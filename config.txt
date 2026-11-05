@@ -1,0 +1,11 @@
+nu=3
+base=1
+ng=2
+tam1=3
+tam2=3
+umbral=2
+procesadores=4
+memoria=8
+pagina=1024
+almacenamiento=8
+bloque=1024
